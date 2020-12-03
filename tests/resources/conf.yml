@@ -1,0 +1,6 @@
+alpha: 100
+$beta: [1, 2]
+$gamma: {a: 'a', d: 'd'}
+$zeta: {a|b|c: 'a|b|c', d: 'd'}
+$$theta: {a|b|c: { e: '(a|b|c).e', f: '(a|b|c).f'}, d: ['d']}
+$drama: {e: 'e', 'f': 'f'}
