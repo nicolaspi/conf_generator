@@ -73,7 +73,7 @@ class ConfGenerator(object):
             context = set([])
         if isinstance(config, str):
             with open(config, 'r') as file:
-                config = yaml.load(file)
+                config = yaml.safe_load(file)
         self._config = config
         self._context = context
         self._varying_param_prefix = varying_param_prefix
@@ -114,9 +114,10 @@ class ConfGenerator(object):
             else:
                 if isinstance(value, dict):
                     dict_ = {}
+                    prefix_len = len(self._varying_param_prefix)
                     for k, v in sorted(value.items()):
                         params = self._demangle_param(k, v, parents, recurse)
-                        trimed_key = k[1:] if k.startswith(self._varying_param_prefix) else k
+                        trimed_key = k[prefix_len:] if k.startswith(self._varying_param_prefix) else k
                         dict_[trimed_key] = params
                     return dict_
                 elif isinstance(value, list):

@@ -5,8 +5,8 @@ from conf_generator import ConfGenerator
 
 class TestConfGenerator(unittest.TestCase):
 
-    def _get_confs(self, config):
-        exp = ConfGenerator(config)
+    def _get_confs(self, config, prefix='$'):
+        exp = ConfGenerator(config, varying_param_prefix=prefix)
         confs = []
         summaries = []
         for conf, summary in exp.generate():
@@ -110,7 +110,12 @@ class TestConfGenerator(unittest.TestCase):
         assert({'alpha': 0, 'alpha$1': 0, 'alpha_': 0, 'beta': {'$alpha': [0], '$alpha_':[0]}} in summaries)
 
     def test_simple15(self):
+        config = {'1#alpha': [0], '1#1#beta': [[{'1#alpha': [0], '1#alpha_': [0]}]]}
+        confs, summaries = self._get_confs(config, prefix='1#')
+        assert(len(summaries) == 1)
+        assert({'alpha': 0, 'alpha$1': 0, 'alpha_': 0, 'beta': {'1#alpha': [0], '1#alpha_':[0]}} in summaries)
 
+    def test_simple16(self):
         config = {'$$beta': {'non_alpha': [16, 8, 1], 'alpha': [1]}, '$$alpha': {'non_alpha': [0.0], 'alpha': [0.001, 0.01, 0.1]}}
         confs, summaries = self._get_confs(config)
         assert (len(summaries) == 6)
@@ -140,6 +145,11 @@ class TestConfGenerator(unittest.TestCase):
 
     def test_simpleConf3(self):
         file = "resources/conf3.yml"
+        confs, summaries = self._get_confs(file)
+        assert (len(confs) == 1)
+
+    def test_simpleConf4(self):
+        file = "resources/conf4.yml"
         confs, summaries = self._get_confs(file)
         assert (len(confs) == 1)
 

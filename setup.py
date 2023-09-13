@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="conf-generator",
-    version="1.0.1",
+    version="1.0.2",
     author="Nicolas Pinchaud",
     author_email="nicolas.pinchaud@gmail.com",
     description="Conf-Generator is a tool for specifying and exploring hyper-parameters sets "
